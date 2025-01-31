@@ -28,9 +28,9 @@ jobs:
       - name: Subtree push to core-only
         run: |
           # constants-test/core-subtree 폴더(예시) → core-only 브랜치
-          git subtree push --prefix=constants-test/core-subtree constants-repo core-only
+          git subtree push --prefix=core-subtree constants-repo core-only
 
       - name: Subtree push to web-only
         run: |
           # constants-test/web-subtree 폴더(예시) → web-only 브랜치
-          git subtree push --prefix=constants-test/web-subtree constants-repo web-only
+          git subtree push --prefix=web-subtree constants-repo web-only
