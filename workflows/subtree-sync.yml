@@ -8,6 +8,7 @@ on:
 jobs:
   sync-to-constants:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out main repo
         uses: actions/checkout@v2
@@ -20,7 +21,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Add remote & push
+      - name: Add remote
         run: |
           git remote add constants-repo https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/Altsoft-KimDongYoung/0131_constants.git
-          git subtree push --prefix=constants-test constants-repo main
+
+      - name: Subtree push to core-only
+        run: |
+          # constants-test/core-subtree 폴더(예시) → core-only 브랜치
+          git subtree push --prefix=constants-test/core-subtree constants-repo core-only
+
+      - name: Subtree push to web-only
+        run: |
+          # constants-test/web-subtree 폴더(예시) → web-only 브랜치
+          git subtree push --prefix=constants-test/web-subtree constants-repo web-only
