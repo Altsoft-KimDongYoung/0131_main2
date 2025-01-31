@@ -27,11 +27,11 @@ jobs:
 
       - name: Subtree push to core-only
         run: |
-          git subtree push --prefix=core-subtree constants-repo core-only
+          git subtree push --force --prefix=core-subtree constants-repo core-only
 
       - name: Subtree push to web-only
         run: |
-          git subtree push --prefix=web-subtree constants-repo web-only
+          git subtree push --force --prefix=web-subtree constants-repo web-only
 
       - name: Trigger B Repo Action
         uses: peter-evans/repository-dispatch@v2
