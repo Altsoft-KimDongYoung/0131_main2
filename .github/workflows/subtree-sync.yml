@@ -16,22 +16,30 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PERSONAL_TOKEN }} # PAT 사용
 
-      - name: Git config
+      - name: Set up Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Add remote
+      - name: Add constants remote
         run: |
           git remote add constants-repo https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/Altsoft-KimDongYoung/0131_constants.git
 
-      - name: Subtree push to core-only
+      - name: Subtree split for core-subtree
         run: |
-          git subtree push --force --prefix=core-subtree constants-repo core-only
+          git subtree split --prefix=core-subtree -b core-only-temp
 
-      - name: Subtree push to web-only
+      - name: Push core-only-temp to core-only
         run: |
-          git subtree push --force --prefix=web-subtree constants-repo web-only
+          git push --force constants-repo core-only-temp:core-only
+
+      - name: Subtree split for web-subtree
+        run: |
+          git subtree split --prefix=web-subtree -b web-only-temp
+
+      - name: Push web-only-temp to web-only
+        run: |
+          git push --force constants-repo web-only-temp:web-only
 
       - name: Trigger B Repo Action
         uses: peter-evans/repository-dispatch@v2
@@ -41,6 +49,6 @@ jobs:
           # 이벤트를 받을 B 레포
           repository: "Altsoft-KimDongYoung/0131_main4"
           # B 레포에서 구독할 이벤트 타입
-          event-type: "main-merged-main2"
+          event-type: "main-merged"
           # 필요하다면 추가 데이터 client-payload 예시
           # client-payload: '{"info":"example"}'
